@@ -31,8 +31,8 @@ TurbulenzEngine.onload = function onloadFn()
   });
 
   // Viewport for Draw2D
-  var gameWidth = graphicsDevice.width;
-  var gameHeight = graphicsDevice.height;
+  var gameWidth = 800;
+  var gameHeight = 600;
 
   var viewport = mathDevice.v4Build(0, 0, gameWidth, gameHeight);
   draw2D.configure({
@@ -47,7 +47,6 @@ TurbulenzEngine.onload = function onloadFn()
   var bgColor = [r, g, b, a];
 
   // Main character
-
   var textureMainCharacter = graphicsDevice.createTexture({
       src: "./assets/characters/main_character.png",
       mipmaps: true,
@@ -65,7 +64,7 @@ TurbulenzEngine.onload = function onloadFn()
   var sprite = Draw2DSprite.create({
       width: 100,
       height: 100,
-      x: graphicsDevice.width / 2,
+      x: 400,
       y: 600,
       color: [1.0, 1.0, 1.0, 1.0],
   });

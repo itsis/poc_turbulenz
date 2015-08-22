@@ -130,8 +130,8 @@ TurbulenzEngine.onload = function onloadFn() {
     var draw2D = Draw2D.create({
         graphicsDevice: graphicsDevice
     });
-    var gameWidth = graphicsDevice.width;
-    var gameHeight = graphicsDevice.height;
+    var gameWidth = 800;
+    var gameHeight = 600;
     var viewport = mathDevice.v4Build(0, 0, gameWidth, gameHeight);
     draw2D.configure({
         scaleMode: 'scale',
@@ -153,7 +153,7 @@ TurbulenzEngine.onload = function onloadFn() {
     var sprite = Draw2DSprite.create({
         width: 100,
         height: 100,
-        x: graphicsDevice.width / 2,
+        x: 400,
         y: 600,
         color: [1.0, 1.0, 1.0, 1.0],
     });
