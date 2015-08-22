@@ -1,0 +1,65 @@
+declare class Motion {
+    static version: number;
+    public pi2: number;
+    public rotationType: {
+        none: number;
+        weave2D: number;
+        rotate: number;
+    };
+    public movementType: {
+        none: number;
+        constant: number;
+        pulse: number;
+    };
+    public directionType: {
+        none: number;
+        circular2D: number;
+        linear: number;
+    };
+    public movementRate: number;
+    public isMovementForward: boolean;
+    public circularRadius: number;
+    public rotationRate: number;
+    public rotationVariation: number;
+    public md: MathDevice;
+    public name: string;
+    public matrix: any;
+    public rotMode: number;
+    public movMode: number;
+    public dirMode: number;
+    public up: any;
+    public position: any;
+    public endPosition: any;
+    public circularAngle: number;
+    public circularCenter: any;
+    public centerPosition: any;
+    public motionPhase: number;
+    public motionWaveSin: number;
+    public motionWaveCos: number;
+    public movementDelta: number;
+    public move: boolean;
+    public atTarget: boolean;
+    public atTargetDelta: number;
+    public targetPosition: any;
+    public xaxis: any;
+    public yaxis: any;
+    public zaxis: any;
+    public v3temp: any;
+    public baseRotation: any;
+    public variantRotation: any;
+    public setCircularMovement(radius, center): void;
+    public setRailMovement(endPosition, startRate): void;
+    public setConstantMotion(constantRate): void;
+    public setDuckMotion(swimRate, wobbleRate, wobbleVariation): void;
+    public setConstantRotation(constantRate): void;
+    public setUpdateMatrix(matrixToUpdate): void;
+    public setBaseOrientation(rotationAngle): void;
+    public reverseDirection(): void;
+    public getMovementRate(): number;
+    public getRotationRate(): number;
+    public updateRotation(delta2PI): void;
+    public updateMovement(delta): void;
+    public updateDirection(delta): void;
+    public update(delta): void;
+    static create(md: MathDevice, name: string): Motion;
+}
