@@ -109,6 +109,7 @@ html, body, div, span, object, iframe, h1, h2, p, a, img, ul, li, fieldset, form
 <script type="text/javascript" src="jslib/webgl/turbulenzengine.js"></script>
 <script type="text/javascript" src="tslib/texturemanager.js"></script>
 <script type="text/javascript" src="jslib-modular/tzdraw2d.js"></script>
+<script type="text/javascript" src="jslib-modular/services.js"></script>
 <script type="text/javascript" src="jslib/requesthandler.js"></script>
     <!-- end 'tz_include_js' variable -->
 
@@ -122,11 +123,13 @@ TurbulenzEngine.onload = function onloadFn() {
     var scaleMoode = 'scale';
     var blendMode = 'alpha';
     var sortMode = 'deferred';
+    var sprites;
+    var textureMainCharacter;
     var graphicsDevice = TurbulenzEngine.createGraphicsDevice({});
     var mathDevice = TurbulenzEngine.createMathDevice({});
     var requestHandler = RequestHandler.create({});
     var textureManager = TextureManager.create(graphicsDevice, requestHandler, null, null);
-    var onLoadTexture = function onloadFn(textureInstance) { };
+    var gameSession = TurbulenzServices.createGameSession(requestHandler, sessionCreated);
     var draw2D = Draw2D.create({
         graphicsDevice: graphicsDevice
     });
@@ -139,24 +142,53 @@ TurbulenzEngine.onload = function onloadFn() {
     });
     var r = 0.0, g = 0.0, b = 0.0, a = 1.0;
     var bgColor = [r, g, b, a];
-    var textureMainCharacter = graphicsDevice.createTexture({
-        src: "./assets/characters/main_character.png",
-        mipmaps: true,
-        onload: function (texture) {
-            if (texture) {
-                textureManager.add('mainCharacter', texture);
-                sprite.setTexture(textureManager.get('mainCharacter'));
-                sprite.setTextureRectangle([0, 0, 64, 64]);
-            }
+    var texturesNames = null;
+    var loadedResources = 0;
+    var mappingTableArray;
+    function sessionCreated(gameSession) {
+        TurbulenzServices.createMappingTable(requestHandler, gameSession, mappingTableReceived);
+    }
+    ;
+    function mappingTableReceived(mappingTable) {
+        alert('mTR');
+        TurbulenzEngine.request("./mapping_table.json", function mappingLoad(jsonData) {
+            var mappingTableArray = JSON.parse(jsonData);
+            mappingTableArray = mappingTableArray['urnmapping'];
+        });
+        function textureParams(src) {
+            return {
+                src: mappingTable.getURL(src),
+                mipmaps: true,
+                onload: function (texture) {
+                    if (texture) {
+                        textureManager.add(src, texture);
+                        loadedResources += 1;
+                    }
+                }
+            };
         }
-    });
-    var sprite = Draw2DSprite.create({
+        ;
+        for (var cptTextureName = 0; cptTextureName < mappingTableArray.length; cptTextureName += 1) {
+            graphicsDevice.createTexture(textureParams(mappingTableArray[cptTextureName]));
+        }
+    }
+    ;
+    var sprites;
+    sprite = Draw2DSprite.create({
         width: 100,
         height: 100,
         x: 400,
-        y: 600,
+        y: 600
+    });
+    var sprite = Draw2DSprite.create({
+        width: 3000,
+        height: 2000,
+        x: 0,
+        y: 0,
         color: [1.0, 1.0, 1.0, 1.0],
     });
+    textureMainCharacter = textureManager.get('./assets/characters/main_character.png');
+    sprite.setTexture(textureMainCharacter);
     var fond = Draw2DSprite.create({
         width: 3000,
         height: 2000,

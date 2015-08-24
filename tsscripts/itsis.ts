@@ -1,5 +1,6 @@
 /*{{ javascript("./tslib/texturemanager.js") }}*/
 /*{{ javascript("./jslib-modular/tzdraw2d.js") }}*/
+/*{{ javascript("./jslib-modular/services.js") }}*/
 /*{{ javascript("./jslib/observer.js") }}*/
 /*{{ javascript("./jslib/requesthandler.js") }}*/
 /*{{ javascript("./jslib/utilities.js") }}*/
@@ -13,6 +14,8 @@ TurbulenzEngine.onload = function onloadFn()
   var blendMode = 'alpha';
   var sortMode = 'deferred';
 
+  var sprites: Draw2DSprite[];
+  var textureMainCharacter;
   //==============================================================
   // Turbulenz Initialisation
   //==============================================================
@@ -21,13 +24,13 @@ TurbulenzEngine.onload = function onloadFn()
   var requestHandler = RequestHandler.create({});
 
   var textureManager = TextureManager.create(graphicsDevice, requestHandler, null, null);
-  var onLoadTexture = function onloadFn(textureInstance){};
+  var gameSession = TurbulenzServices.createGameSession(requestHandler, sessionCreated);
 
   //==============================================================
   // Draw2D Initialisation
   //==============================================================
   var draw2D = Draw2D.create({
-      graphicsDevice: graphicsDevice
+    graphicsDevice: graphicsDevice
   });
 
   // Viewport for Draw2D
@@ -45,29 +48,65 @@ TurbulenzEngine.onload = function onloadFn()
   //==============================================================
   var r = 0.0, g = 0.0, b = 0.0, a = 1.0;
   var bgColor = [r, g, b, a];
+  var texturesNames = null;
+  var loadedResources = 0;
+  var mappingTableArray;
 
-  // Main character
-  var textureMainCharacter = graphicsDevice.createTexture({
-      src: "./assets/characters/main_character.png",
-      mipmaps: true,
-      onload: function (texture)
-      {
-          if (texture)
-          {
-              textureManager.add('mainCharacter', texture);
-              sprite.setTexture(textureManager.get('mainCharacter'));
-              sprite.setTextureRectangle([0, 0, 64, 64]);
+  // Mapping table
+  function sessionCreated(gameSession){
+      TurbulenzServices.createMappingTable(
+        requestHandler,
+        gameSession,
+        mappingTableReceived
+      );
+  };
+
+
+  function mappingTableReceived(mappingTable){
+      alert('mTR');
+      TurbulenzEngine.request("./mapping_table.json", function mappingLoad(jsonData){
+              var mappingTableArray = JSON.parse(jsonData);
+              mappingTableArray = mappingTableArray['urnmapping'];
           }
+      );
+
+      // TextureManager
+      function textureParams(src){
+          return {
+            src : mappingTable.getURL(src),
+            mipmaps : true,
+            onload : function (texture){
+                if (texture){
+                    textureManager.add(src, texture);
+                    loadedResources += 1;
+                }
+            }
+          };
+      };
+
+      for (let cptTextureName = 0; cptTextureName < mappingTableArray.length; cptTextureName += 1){
+          graphicsDevice.createTexture(textureParams(mappingTableArray[cptTextureName]));
       }
+
+  };
+  var sprites: Draw2DSprite[];
+  sprite = Draw2DSprite.create({
+      width:100,
+      height:100,
+      x: 400,
+      y: 600
   });
 
+  // var sprite = sprites['main_character.png'];
   var sprite = Draw2DSprite.create({
-      width: 100,
-      height: 100,
-      x: 400,
-      y: 600,
+      width: 3000,
+      height: 2000,
+      x: 0,
+      y: 0,
       color: [1.0, 1.0, 1.0, 1.0],
   });
+  textureMainCharacter = textureManager.get('./assets/characters/main_character.png');
+  sprite.setTexture(textureMainCharacter);
 
   var fond = Draw2DSprite.create({
       width: 3000,
@@ -75,7 +114,6 @@ TurbulenzEngine.onload = function onloadFn()
       x: 0,
       y: 0,
       color: [1.0, 1.0, 1.0, 1.0],
-
   });
 
   var textureFond = graphicsDevice.createTexture({

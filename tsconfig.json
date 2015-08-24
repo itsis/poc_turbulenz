@@ -10,6 +10,7 @@
         "./jslib-modular/turbulenz.d.ts",
         "./jslib-modular/tzdraw2d.d.ts",
         "./jslib-modular/utilities.d.ts",
+        "./jslib-modular/services.d.ts",
         "./tslib/texturemanager.ts",
         "./tsscripts/itsis.ts"
     ]
