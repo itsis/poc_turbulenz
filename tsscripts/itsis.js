@@ -59,24 +59,19 @@ TurbulenzEngine.onload = function onloadFn() {
     }
     ;
     var sprites;
-    sprite = Draw2DSprite.create({
-        width: 100,
-        height: 100,
+    sprites["main_character.png"] = Draw2DSprite.create({
+        width: 800,
+        height: 600,
         x: 400,
-        y: 600
-    });
-    var sprite = Draw2DSprite.create({
-        width: 3000,
-        height: 2000,
-        x: 0,
-        y: 0,
+        y: 600,
         color: [1.0, 1.0, 1.0, 1.0],
     });
     textureMainCharacter = textureManager.get('./assets/characters/main_character.png');
+    var sprite = sprites['main_character.png'];
     sprite.setTexture(textureMainCharacter);
     var fond = Draw2DSprite.create({
-        width: 3000,
-        height: 2000,
+        width: 800,
+        height: 600,
         x: 0,
         y: 0,
         color: [1.0, 1.0, 1.0, 1.0],
