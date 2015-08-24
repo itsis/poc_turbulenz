@@ -26,8 +26,10 @@ TurbulenzEngine.onload = function onloadFn()
   var mathDevice = TurbulenzEngine.createMathDevice({});
   var requestHandler = RequestHandler.create({});
   var assetTracker: AssetTracker;
-  var textureManager = TextureManager.create(graphicsDevice, requestHandler, null, null);
-  var gameSession = TurbulenzServices.createGameSession(requestHandler, sessionCreated);
+  var textureManager = TextureManager.create(graphicsDevice, requestHandler,
+      null, null);
+  var gameSession = TurbulenzServices.createGameSession(requestHandler,
+      sessionCreated);
 
   //==============================================================
   // Draw2D Initialisation
@@ -66,7 +68,8 @@ TurbulenzEngine.onload = function onloadFn()
   };
 
   function mappingTableReceived(mappingTable){
-      TurbulenzEngine.request("./mapping_table.json", function mappingLoad(jsonData){
+      TurbulenzEngine.request("./mapping_table.json",
+          function mappingLoad(jsonData){
               var mappingTableArrayJSON = JSON.parse(jsonData);
 
               for (let srcJSON in mappingTableArrayJSON['urnmapping']){
@@ -74,15 +77,19 @@ TurbulenzEngine.onload = function onloadFn()
               }
 
               numberAssetsToLoad = mappingTableArray.length;
-              assetTracker = AssetTracker.create(numberAssetsToLoad, displayLog);
-              requestHandler.addEventListener('eventOnload', assetTracker.eventOnLoadHandler);
+              assetTracker = AssetTracker.create(numberAssetsToLoad,
+                             displayLog);
+              requestHandler.addEventListener('eventOnload',
+                                              assetTracker.eventOnLoadHandler);
               assetTracker.setCallback(assetTrackerCallback);
 
               // TextureManager
               function textureLoaded(texture){
               };
-              for (let cptTexture = 0; cptTexture < numberAssetsToLoad; cptTexture += 1){
-                  textureManager.load(mappingTableArray[cptTexture], false, textureLoaded);
+              for (let cptTexture = 0; cptTexture < numberAssetsToLoad;
+              cptTexture += 1){
+                  textureManager.load(mappingTableArray[cptTexture], false,
+                                      textureLoaded);
               }
           }
       );
@@ -185,10 +192,17 @@ TurbulenzEngine.onload = function onloadFn()
   var step = 10;
   var stateGame = 0;
   var itPath=0;
-  var pathToDeskX=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10  ,-10,-10,-10,-10,-10,-10,-10,0,0,0  ];
-  var pathToDeskY=[-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-10,-10,-10,-10     ];
-  var pathToTableauX=[0,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,0,0,0,10,10];
-  var pathToTableauY=[10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-10,-10,-10,0,0];
+  var pathToDeskX=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,
+      -10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,0,0,0];
+  var pathToDeskY=[-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,
+      -10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,-10,
+      -10,-10,-10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-10,-10,
+      -10,-10];
+  var pathToTableauX=[0,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,
+      10,10,10,10,10,10,10,10,10,10,10,10,10,0,0,0,10,10];
+  var pathToTableauY=[10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,-10,-10,-10,0,0];
 
   var timer=0;
   var nextUpdate = 0;
@@ -207,7 +221,6 @@ TurbulenzEngine.onload = function onloadFn()
           draw2D.drawSprite(ordi);
           draw2D.drawSprite(fontaine);
           draw2D.drawSprite(borne);
-
 
           draw2D.end();
 
@@ -316,7 +329,8 @@ TurbulenzEngine.onload = function onloadFn()
           }
 
         //  sprite.setTexture(textureMainCharacter);
-          spriteMainCharacter.setTextureRectangle([0 + 64*state, 0 + 64*dir, 64 + 64*state,  64 + 64*dir]);
+          spriteMainCharacter.setTextureRectangle([0 + 64*state,
+                      0 + 64*dir, 64 + 64*state,  64 + 64*dir]);
       }
   }
 
