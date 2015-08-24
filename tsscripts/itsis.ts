@@ -14,7 +14,6 @@ TurbulenzEngine.onload = function onloadFn()
   var blendMode = 'alpha';
   var sortMode = 'deferred';
 
-  var sprites: Draw2DSprite[];
   var textureMainCharacter;
   //==============================================================
   // Turbulenz Initialisation
@@ -88,22 +87,24 @@ TurbulenzEngine.onload = function onloadFn()
           graphicsDevice.createTexture(textureParams(mappingTableArray[cptTextureName]));
       }
 
+      textureMainCharacter = textureManager.get('./assets/characters/main_character.png');
+
+
   };
-  var sprites: Draw2DSprite[];
+  var sprites = Array();
   sprites["main_character.png"] = Draw2DSprite.create({
-      width: 800,
-      height: 600,
+      width: 80,
+      height: 80,
       x: 400,
       y: 600,
       color: [1.0, 1.0, 1.0, 1.0],
   });
-  textureMainCharacter = textureManager.get('./assets/characters/main_character.png');
   var sprite = sprites['main_character.png'];
   sprite.setTexture(textureMainCharacter);
 
   var fond = Draw2DSprite.create({
-      width: 800,
-      height: 600,
+      width: 3000,
+      height: 2000,
       x: 0,
       y: 0,
       color: [1.0, 1.0, 1.0, 1.0],

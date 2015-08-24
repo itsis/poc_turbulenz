@@ -8,7 +8,6 @@ TurbulenzEngine.onload = function onloadFn() {
     var scaleMoode = 'scale';
     var blendMode = 'alpha';
     var sortMode = 'deferred';
-    var sprites;
     var textureMainCharacter;
     var graphicsDevice = TurbulenzEngine.createGraphicsDevice({});
     var mathDevice = TurbulenzEngine.createMathDevice({});
@@ -56,22 +55,22 @@ TurbulenzEngine.onload = function onloadFn() {
         for (var cptTextureName = 0; cptTextureName < mappingTableArray.length; cptTextureName += 1) {
             graphicsDevice.createTexture(textureParams(mappingTableArray[cptTextureName]));
         }
+        textureMainCharacter = textureManager.get('./assets/characters/main_character.png');
     }
     ;
-    var sprites;
+    var sprites = Array();
     sprites["main_character.png"] = Draw2DSprite.create({
-        width: 800,
-        height: 600,
+        width: 80,
+        height: 80,
         x: 400,
         y: 600,
         color: [1.0, 1.0, 1.0, 1.0],
     });
-    textureMainCharacter = textureManager.get('./assets/characters/main_character.png');
     var sprite = sprites['main_character.png'];
     sprite.setTexture(textureMainCharacter);
     var fond = Draw2DSprite.create({
-        width: 800,
-        height: 600,
+        width: 3000,
+        height: 2000,
         x: 0,
         y: 0,
         color: [1.0, 1.0, 1.0, 1.0],
