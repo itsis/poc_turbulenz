@@ -1,13 +1,13 @@
-/*{{ javascript("./tslib/texturemanager.js") }}*/
-/*{{ javascript("./tslib/draw2d.js") }}*/
-/*{{ javascript("./tslib/assetTracker.js") }}*/
-/*{{ javascript("./tslib/services/mappingtable.js") }}*/
-/*{{ javascript("./tslib/services/gamesession.js") }}*/
-/*{{ javascript("./tslib/services/turbulenzbridge.js") }}*/
-/*{{ javascript("./tslib/services/turbulenzservices.js") }}*/
-/*{{ javascript("./tslib/observer.js") }}*/
-/*{{ javascript("./tslib/requesthandler.js") }}*/
-/*{{ javascript("./tslib/utilities.js") }}*/
+/*{{ javascript("./jslib/texturemanager.js") }}*/
+/*{{ javascript("./jslib/draw2d.js") }}*/
+/*{{ javascript("./jslib/assetTracker.js") }}*/
+/*{{ javascript("./jslib/services/mappingtable.js") }}*/
+/*{{ javascript("./jslib/services/gamesession.js") }}*/
+/*{{ javascript("./jslib/services/turbulenzbridge.js") }}*/
+/*{{ javascript("./jslib/services/turbulenzservices.js") }}*/
+/*{{ javascript("./jslib/observer.js") }}*/
+/*{{ javascript("./jslib/requesthandler.js") }}*/
+/*{{ javascript("./jslib/utilities.js") }}*/
 
 TurbulenzEngine.onload = function onloadFn()
 {
