@@ -393,14 +393,21 @@ TurbulenzEngine.onload = function onloadFn() {
             textureNameSplit = textureName.split("/");
             textureType = textureNameSplit[2];
             if (textureType == 'characters') {
+                texture = textureManager.get(textureName);
                 sprites[textureName] = Draw2DSprite.create({
+                    texture: texture,
                     width: 64,
                     height: 64
                 });
-                texture = textureManager.get(textureName);
-                sprites[textureName].setTexture(texture);
             }
             else if (textureType == 'scenery') {
+                textureHeight = texture.Height;
+                textureWidth = texture.Width;
+                sprites[textureName] = Draw2DSprite.create({
+                    texture: texture,
+                    width: textureWidth,
+                    height: textureHeight
+                });
             }
         }
         spriteMainCharacter = sprites['./assets/characters/main_character.png'];
