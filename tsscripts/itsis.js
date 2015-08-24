@@ -65,7 +65,7 @@ TurbulenzEngine.onload = function onloadFn() {
         height: 64,
         x: 400,
         y: 600,
-        color: [1.0, 1.0, 1.0, 1.0],
+        color: [1.0, 1.0, 1.0, 1.0]
     });
     var sprite = sprites['main_character.png'];
     var fond = Draw2DSprite.create({
@@ -73,7 +73,7 @@ TurbulenzEngine.onload = function onloadFn() {
         height: 2000,
         x: 0,
         y: 0,
-        color: [1.0, 1.0, 1.0, 1.0],
+        color: [1.0, 1.0, 1.0, 1.0]
     });
     var textureFond = graphicsDevice.createTexture({
         src: "./assets/scenery/fond2.png",
@@ -91,35 +91,35 @@ TurbulenzEngine.onload = function onloadFn() {
         height: 100,
         x: 140,
         y: 140,
-        color: [1.0, 1.0, 1.0, 1.0],
+        color: [1.0, 1.0, 1.0, 1.0]
     });
     var tableau = Draw2DSprite.create({
         width: 90,
         height: 150,
         x: 540,
         y: 140,
-        color: [1.0, 1.0, 1.0, 1.0],
+        color: [1.0, 1.0, 1.0, 1.0]
     });
     var ordi = Draw2DSprite.create({
         width: 50,
         height: 50,
         x: 130,
         y: 120,
-        color: [1.0, 1.0, 1.0, 1.0],
+        color: [1.0, 1.0, 1.0, 1.0]
     });
     var fontaine = Draw2DSprite.create({
         width: 60,
         height: 120,
         x: 530,
         y: 400,
-        color: [1.0, 1.0, 1.0, 1.0],
+        color: [1.0, 1.0, 1.0, 1.0]
     });
     var borne = Draw2DSprite.create({
         width: 100,
         height: 180,
         x: 130,
         y: 400,
-        color: [1.0, 1.0, 1.0, 1.0],
+        color: [1.0, 1.0, 1.0, 1.0]
     });
     var textureDecor = graphicsDevice.createTexture({
         src: "./assets/scenery/office.png",

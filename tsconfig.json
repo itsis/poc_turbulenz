@@ -2,7 +2,6 @@
     "compilerOptions": {},
     "filesGlob": [
         "./**/*.ts",
-        "!./tslibbak/**/*.ts",
         "!./tslib/debug.ts"
     ],
     "formatCodeOptions": {
