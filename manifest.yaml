@@ -1,15 +1,16 @@
-aspect_ratio: '16:9'
+aspect_ratio: '4:3'
 canvas_main: ''
 cover_art: ''
-deploy_files: []
+deploy_files:
+- mapping_table.json
 deployed: Never
 engine_version: '0.28'
 flash_main: ''
 has_notifications: false
 is_multiplayer: false
 is_temp: false
-mapping_table: ''
-modified: 12:37 | 20/08/2015
+mapping_table: mapping_table.json
+modified: 11:02 | 24/08/2015
 path: C:\ITSIS
 plugin_main: ''
 slug: it-services-industry-simulator
