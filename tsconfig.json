@@ -1,16 +1,22 @@
 {
     "compilerOptions": {
-      "declaration":true
     },
     "formatCodeOptions" :{
       "convertTabsToSpaces": true,
       "insertSpaceAfterCommaDelimiter": true
     },
     "files": [
-        "./jslib-modular/turbulenz.d.ts",
-        "./jslib-modular/tzdraw2d.d.ts",
-        "./jslib-modular/utilities.d.ts",
-        "./jslib-modular/services.d.ts",
+      
+        "./tslib/services/mappingtable.ts",
+        "./tslib/services/turbulenzbridge.ts",
+        "./tslib/turbulenz.d.ts",
+        "./tslib/services/gamesession.ts",
+        "./tslib/observer.ts",
+        "./tslib/services/turbulenzservices.ts",
+        "./tslib/draw2d.ts",
+        "./tslib/requesthandler.ts",
+        "./tslib/utilities.ts",
+        "./tslib/assetTracker.ts",
         "./tslib/texturemanager.ts",
         "./tsscripts/itsis.ts"
     ]

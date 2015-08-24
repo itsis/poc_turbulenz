@@ -1,17 +1,22 @@
 /*{{ javascript("./tslib/texturemanager.js") }}*/
-/*{{ javascript("./jslib-modular/tzdraw2d.js") }}*/
-/*{{ javascript("./jslib-modular/services.js") }}*/
-/*{{ javascript("./jslib/observer.js") }}*/
-/*{{ javascript("./jslib/requesthandler.js") }}*/
-/*{{ javascript("./jslib/utilities.js") }}*/
+/*{{ javascript("./tslib/draw2d.js") }}*/
+/*{{ javascript("./tslib/assetTracker.js") }}*/
+/*{{ javascript("./tslib/services/mappingtable.js") }}*/
+/*{{ javascript("./tslib/services/gamesession.js") }}*/
+/*{{ javascript("./tslib/services/turbulenzbridge.js") }}*/
+/*{{ javascript("./tslib/services/turbulenzservices.js") }}*/
+/*{{ javascript("./tslib/observer.js") }}*/
+/*{{ javascript("./tslib/requesthandler.js") }}*/
+/*{{ javascript("./tslib/utilities.js") }}*/
 TurbulenzEngine.onload = function onloadFn() {
     var scaleMoode = 'scale';
     var blendMode = 'alpha';
     var sortMode = 'deferred';
-    var textureMainCharacter;
+    var displayLog = true;
     var graphicsDevice = TurbulenzEngine.createGraphicsDevice({});
     var mathDevice = TurbulenzEngine.createMathDevice({});
     var requestHandler = RequestHandler.create({});
+    var assetTracker;
     var textureManager = TextureManager.create(graphicsDevice, requestHandler, null, null);
     var gameSession = TurbulenzServices.createGameSession(requestHandler, sessionCreated);
     var draw2D = Draw2D.create({
@@ -34,40 +39,35 @@ TurbulenzEngine.onload = function onloadFn() {
     }
     ;
     function mappingTableReceived(mappingTable) {
-        alert('mTR');
         TurbulenzEngine.request("./mapping_table.json", function mappingLoad(jsonData) {
-            var mappingTableArray = JSON.parse(jsonData);
-            mappingTableArray = mappingTableArray['urnmapping'];
+            var mappingTableArrayJSON = JSON.parse(jsonData);
+            var mappingTableArray = Array();
+            for (var srcJSON in mappingTableArrayJSON['urnmapping']) {
+                mappingTableArray.push(srcJSON);
+            }
+            var numberAssetsToLoad = mappingTableArray.length;
+            assetTracker = AssetTracker.create(numberAssetsToLoad, displayLog);
+            requestHandler.addEventListener('eventOnload', assetTracker.eventOnLoadHandler);
+            assetTracker.setCallback(assetTrackerCallback);
+            function textureLoaded(texture) {
+            }
+            ;
+            for (var cptTexture = 0; cptTexture < numberAssetsToLoad; cptTexture += 1) {
+                textureManager.load(mappingTableArray[cptTexture], false, textureLoaded);
+            }
         });
-        function textureParams(src) {
-            return {
-                src: mappingTable.getURL(src),
-                mipmaps: true,
-                onload: function (texture) {
-                    if (texture) {
-                        textureManager.add(src, texture);
-                        loadedResources += 1;
-                    }
-                }
-            };
-        }
-        ;
-        for (var cptTextureName = 0; cptTextureName < mappingTableArray.length; cptTextureName += 1) {
-            graphicsDevice.createTexture(textureParams(mappingTableArray[cptTextureName]));
-        }
-        textureMainCharacter = textureManager.get('./assets/characters/main_character.png');
     }
     ;
+    var textureMainCharacter;
     var sprites = Array();
-    sprites["main_character.png"] = Draw2DSprite.create({
-        width: 80,
-        height: 80,
+    sprites['main_character.png'] = Draw2DSprite.create({
+        width: 64,
+        height: 64,
         x: 400,
         y: 600,
         color: [1.0, 1.0, 1.0, 1.0],
     });
     var sprite = sprites['main_character.png'];
-    sprite.setTexture(textureMainCharacter);
     var fond = Draw2DSprite.create({
         width: 3000,
         height: 2000,
@@ -268,7 +268,14 @@ TurbulenzEngine.onload = function onloadFn() {
         }
     }
     var intervalID;
-    intervalID = TurbulenzEngine.setInterval(update, 1000 / 60);
+    function assetTrackerCallback() {
+        var loadingProgress = assetTracker.getLoadingProgress();
+        if (loadingProgress == 1) {
+            textureMainCharacter = textureManager.get('./assets/characters/main_character.png');
+            sprite.setTexture(textureMainCharacter);
+            intervalID = TurbulenzEngine.setInterval(update, 1000 / 60);
+        }
+    }
     TurbulenzEngine.onunload = function destroyGame() {
         if (intervalID) {
             TurbulenzEngine.clearInterval(intervalID);
