@@ -1,5 +1,6 @@
 {"urnmapping":{
     "./assets/characters/main_character.png": "../assets/characters/main_character.png",
-    "./assets/scenery/fond.png": "../assets/scenery/fond.png"
+    "./assets/scenery/fond2.png": "../assets/scenery/fond2.png",
+	"./assets/scenery/office.png": "./assets/scenery/office.png"
   }
 }

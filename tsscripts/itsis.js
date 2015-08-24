@@ -33,7 +33,8 @@ TurbulenzEngine.onload = function onloadFn() {
     var bgColor = [r, g, b, a];
     var texturesNames = null;
     var loadedResources = 0;
-    var mappingTableArray;
+    var numberAssetsToLoad;
+    var mappingTableArray = Array();
     function sessionCreated(gameSession) {
         TurbulenzServices.createMappingTable(requestHandler, gameSession, mappingTableReceived);
     }
@@ -41,11 +42,10 @@ TurbulenzEngine.onload = function onloadFn() {
     function mappingTableReceived(mappingTable) {
         TurbulenzEngine.request("./mapping_table.json", function mappingLoad(jsonData) {
             var mappingTableArrayJSON = JSON.parse(jsonData);
-            var mappingTableArray = Array();
             for (var srcJSON in mappingTableArrayJSON['urnmapping']) {
                 mappingTableArray.push(srcJSON);
             }
-            var numberAssetsToLoad = mappingTableArray.length;
+            numberAssetsToLoad = mappingTableArray.length;
             assetTracker = AssetTracker.create(numberAssetsToLoad, displayLog);
             requestHandler.addEventListener('eventOnload', assetTracker.eventOnLoadHandler);
             assetTracker.setCallback(assetTrackerCallback);
@@ -60,14 +60,7 @@ TurbulenzEngine.onload = function onloadFn() {
     ;
     var textureMainCharacter;
     var sprites = Array();
-    sprites['main_character.png'] = Draw2DSprite.create({
-        width: 64,
-        height: 64,
-        x: 400,
-        y: 600,
-        color: [1.0, 1.0, 1.0, 1.0]
-    });
-    var sprite = sprites['main_character.png'];
+    var spriteMainCharacter;
     var fond = Draw2DSprite.create({
         width: 3000,
         height: 2000,
@@ -142,7 +135,6 @@ TurbulenzEngine.onload = function onloadFn() {
     var dir = 3;
     var state = 0;
     var step = 10;
-    var pos = sprite.y;
     var stateGame = 0;
     var itPath = 0;
     var pathToDeskX = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, 0, 0, 0];
@@ -156,7 +148,7 @@ TurbulenzEngine.onload = function onloadFn() {
             graphicsDevice.clear(bgColor, 1);
             draw2D.begin(blendMode, sortMode);
             draw2D.drawSprite(fond);
-            draw2D.drawSprite(sprite);
+            draw2D.drawSprite(spriteMainCharacter);
             draw2D.drawSprite(table);
             draw2D.drawSprite(tableau);
             draw2D.drawSprite(ordi);
@@ -187,8 +179,8 @@ TurbulenzEngine.onload = function onloadFn() {
                             dir = 1;
                         }
                     }
-                    sprite.x += pathToDeskX[itPath];
-                    sprite.y += pathToDeskY[itPath];
+                    spriteMainCharacter.x += pathToDeskX[itPath];
+                    spriteMainCharacter.y += pathToDeskY[itPath];
                     state += 1;
                     if (state > 3)
                         state = 0;
@@ -218,8 +210,8 @@ TurbulenzEngine.onload = function onloadFn() {
                                 dir = 1;
                             }
                         }
-                        sprite.x += pathToTableauX[itPath];
-                        sprite.y += pathToTableauY[itPath];
+                        spriteMainCharacter.x += pathToTableauX[itPath];
+                        spriteMainCharacter.y += pathToTableauY[itPath];
                         state += 1;
                         if (state > 3)
                             state = 0;
@@ -249,13 +241,13 @@ TurbulenzEngine.onload = function onloadFn() {
                                     dir = 2;
                                 }
                             }
-                            sprite.x -= pathToTableauX[itPath];
-                            sprite.y -= pathToTableauY[itPath];
+                            spriteMainCharacter.x -= pathToTableauX[itPath];
+                            spriteMainCharacter.y -= pathToTableauY[itPath];
                             state += 1;
                             if (state > 3)
                                 state = 0;
                             itPath -= 1;
-                            console.log(itPath + ".." + sprite.x);
+                            console.log(itPath + ".." + spriteMainCharacter.x);
                         }
                         if (timer > 360) {
                             stateGame = 4;
@@ -263,18 +255,49 @@ TurbulenzEngine.onload = function onloadFn() {
                     }
                 }
             }
-            sprite.setTexture(textureMainCharacter);
-            sprite.setTextureRectangle([0 + 64 * state, 0 + 64 * dir, 64 + 64 * state, 64 + 64 * dir]);
+            spriteMainCharacter.setTextureRectangle([0 + 64 * state, 0 + 64 * dir, 64 + 64 * state, 64 + 64 * dir]);
         }
     }
     var intervalID;
     function assetTrackerCallback() {
         var loadingProgress = assetTracker.getLoadingProgress();
         if (loadingProgress == 1) {
-            textureMainCharacter = textureManager.get('./assets/characters/main_character.png');
-            sprite.setTexture(textureMainCharacter);
+            createSprites();
             intervalID = TurbulenzEngine.setInterval(update, 1000 / 60);
         }
+    }
+    function createSprites() {
+        var textureName;
+        var textureNameSplit = Array();
+        var textureType;
+        var texture;
+        var textureHeight;
+        var textureWidth;
+        for (var cptTexture = 0; cptTexture < numberAssetsToLoad; cptTexture += 1) {
+            textureName = mappingTableArray[cptTexture];
+            textureNameSplit = textureName.split("/");
+            textureType = textureNameSplit[2];
+            if (textureType == 'characters') {
+                texture = textureManager.get(textureName);
+                sprites[textureName] = Draw2DSprite.create({
+                    texture: texture,
+                    width: 64,
+                    height: 64
+                });
+            }
+            else if (textureType == 'scenery') {
+                textureHeight = texture.Height;
+                textureWidth = texture.Width;
+                sprites[textureName] = Draw2DSprite.create({
+                    texture: texture,
+                    width: textureWidth,
+                    height: textureHeight
+                });
+            }
+        }
+        spriteMainCharacter = sprites['./assets/characters/main_character.png'];
+        spriteMainCharacter.x = 400;
+        spriteMainCharacter.y = 600;
     }
     TurbulenzEngine.onunload = function destroyGame() {
         if (intervalID) {
